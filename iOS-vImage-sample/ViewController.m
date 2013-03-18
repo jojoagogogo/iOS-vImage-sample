@@ -22,7 +22,7 @@
     = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     [self.imageView addGestureRecognizer:tap];
     
-    self.scrollView.contentSize = CGSizeMake(500, 50);
+    self.scrollView.contentSize = CGSizeMake(1200, 50);
     self.scrollView.showsHorizontalScrollIndicator = NO;
     [self addButton];
 
@@ -36,15 +36,34 @@
     int fontSize = 12;
 
     NSMutableDictionary *btns = [NSMutableDictionary dictionary];
-    [btns setObject:@"grayscale:" forKey:@"Gray"];
-    [btns setObject:@"blur:" forKey:@"Blur"];
-    [btns setObject:@"britenWhite:" forKey:@"BrWhite"];
-    [btns setObject:@"edgeDetection:" forKey:@"Edge"];
-    [btns setObject:@"emboss:" forKey:@"Emboss"];
-    [btns setObject:@"invert:" forKey:@"Invert"];
-    [btns setObject:@"sepia:" forKey:@"Sepia"];
-    [btns setObject:@"unsharpen:" forKey:@"Usharp"];
+    [btns setObject:@"grayscale:" forKey:@"01.Gray"];
+    [btns setObject:@"blur:" forKey:@"02.Blur"];
+    [btns setObject:@"britenWhite:" forKey:@"03.BrWhi"];
+    [btns setObject:@"edgeDetection:" forKey:@"04.Edge"];
+    [btns setObject:@"emboss:" forKey:@"05.Embo"];
+    [btns setObject:@"invert:" forKey:@"06.Invert"];
+    [btns setObject:@"sepia:" forKey:@"07.Sepia"];
+    [btns setObject:@"unsharpen:" forKey:@"08.sharp"];
 
+    [btns setObject:@"enhance:" forKey:@"09.Enha"];
+    [btns setObject:@"redEyeCorrection:" forKey:@"10.REye"];
+    [btns setObject:@"scaleByFactor:" forKey:@"11.sclF"];
+    [btns setObject:@"scaleToFitSize:" forKey:@"12.sclT"];
+
+    //UIImage+Rotating
+    [btns setObject:@"rotateInDegrees:" forKey:@"13.RtDe"];
+    [btns setObject:@"rotateInRadians:" forKey:@"14.RtInR"];
+    [btns setObject:@"verticalFlip:" forKey:@"15.VertF"];
+    [btns setObject:@"horizontalFlip:" forKey:@"16.HorF"];
+
+    //UIImage+Reflection
+    [btns setObject:@"reflectedImageWH:" forKey:@"17.RefI"];
+    //UIImage+Resizing
+    [btns setObject:@"cropToSize:" forKey:@"18.Crop"];
+    
+
+    
+    
     NSArray *keys = [btns allKeys];
 
     keys = [keys sortedArrayUsingSelector:@selector(compare:)];
@@ -184,6 +203,49 @@
 - (IBAction)unsharpen:(id)sender {
     self.imageView.image = [srcImage unsharpenWithBias:0];
 }
+
+- (IBAction)enhance:(id)sender {
+    self.imageView.image = [srcImage autoEnhance];
+}
+
+- (IBAction)redEyeCorrection:(id)sender {
+    self.imageView.image = [srcImage redEyeCorrection];
+}
+
+- (IBAction)scaleByFactor:(id)sender {
+    self.imageView.image = [srcImage scaleByFactor:0.5f];
+}
+
+- (IBAction)scaleToFitSize:(id)sender {
+                                                    //w h
+    self.imageView.image = [srcImage scaleToFitSize:CGSizeMake(50,100)];
+}
+
+- (IBAction)rotateInDegrees:(id)sender {
+    self.imageView.image = [srcImage rotateInDegrees:217.0f];
+}
+
+- (IBAction)rotateInRadians:(id)sender {
+    self.imageView.image = [srcImage rotateInRadians:M_PI_2];
+}
+
+- (IBAction)verticalFlip:(id)sender {
+    self.imageView.image = [srcImage verticalFlip];
+}
+
+- (IBAction)horizontalFlip:(id)sender {
+    self.imageView.image = [srcImage horizontalFlip];
+}
+
+- (IBAction)reflectedImageWH:(id)sender {
+    self.imageView.image = [srcImage reflectedImageWithHeight:srcImage.size.height fromAlpha:0.0f toAlpha:0.5f];
+}
+
+- (IBAction)cropToSize:(id)sender {
+    self.imageView.image = [srcImage cropToSize:CGSizeMake(srcImage.size.width * 0.5, srcImage.size.height * 0.5) usingMode:NYXCropModeCenter];
+}
+
+
 - (UIImage *)fixOrientation:(UIImage *)img {
     if (img.imageOrientation == UIImageOrientationUp) return img;
     CGAffineTransform transform = CGAffineTransformIdentity;
